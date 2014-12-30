@@ -1,8 +1,165 @@
 ﻿<Window x:Class="MusicOrganizer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="MainWindow" Height="404" Width="913.175">
+    <Grid ShowGridLines="True">
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Open"/>
+                    <MenuItem Header="_Close"/>
+                    <MenuItem Header="_Save"/>
+                </MenuItem>
+            </Menu>
+            <Grid DockPanel.Dock="Bottom" Margin="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Label  Grid.Column="0" Content="Message d'info"/>
+                <Button Grid.Column="1" Padding="5" Content="Prévisualiser"/>
+                <Button Grid.Column="2" Padding="5" Margin="5,0" Content="Exécuter"/>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox Grid.Row="0" Header="Dossier source">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0">Cliquer sur parcourir..</Label>
+                            <Button Grid.Column="1" Padding="5">Parcourir...</Button>
+                        </Grid>
+
+                    </GroupBox>
+                    <GroupBox Grid.Row="1">
+                        <GroupBox.Header>Dossier destination</GroupBox.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+
+                            </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Column="0">Cliquer sur parcourir..</Label>
+                                <Button Grid.Column="1" Padding="5">Parcourir...</Button>
+                            </Grid>
+                            <ScrollViewer Grid.Row="1" Margin="0 5 0 0" VerticalScrollBarVisibility="Auto">
+                                <TreeView>
+                                    <TreeViewItem>
+                                        <TreeViewItem.Header>
+                                            <CheckBox Content="Label 1"/>
+                                        </TreeViewItem.Header>
+
+                                        <TreeViewItem>
+                                            <TreeViewItem.Header>
+                                                <CheckBox Content="Label 2"/>
+                                            </TreeViewItem.Header>
+
+                                            <TreeViewItem>
+                                                <TreeViewItem.Header>
+                                                    <CheckBox Content="Label 3"/>
+                                                </TreeViewItem.Header>
+
+                                            </TreeViewItem>
+                                        </TreeViewItem>
+                                        <TreeViewItem>
+                                            <TreeViewItem.Header>
+                                                <CheckBox Content="Label 2"/>
+                                            </TreeViewItem.Header>
+
+                                            <TreeViewItem>
+                                                <TreeViewItem.Header>
+                                                    <CheckBox Content="Label 3"/>
+                                                </TreeViewItem.Header>
+
+                                            </TreeViewItem>
+                                        </TreeViewItem>
+                                        <TreeViewItem>
+                                            <TreeViewItem.Header>
+                                                <CheckBox Content="Label 2"/>
+                                            </TreeViewItem.Header>
+
+                                            <TreeViewItem>
+                                                <TreeViewItem.Header>
+                                                    <CheckBox Content="Label 3"/>
+                                                </TreeViewItem.Header>
+
+                                            </TreeViewItem>
+                                        </TreeViewItem>
+                                        <TreeViewItem>
+                                            <TreeViewItem.Header>
+                                                <CheckBox Content="Label 2"/>
+                                            </TreeViewItem.Header>
+
+                                            <TreeViewItem>
+                                                <TreeViewItem.Header>
+                                                    <CheckBox Content="Label 3"/>
+                                                </TreeViewItem.Header>
+
+                                            </TreeViewItem>
+                                        </TreeViewItem>
+
+                                    </TreeViewItem>
+                                </TreeView>
+                            </ScrollViewer>
+                        </Grid>
+                    </GroupBox>
+
+                </Grid>
+
+                <Grid Grid.Column="1" Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Header="Tags disponibles" Grid.Row="0">
+                        <ListBox >
+                            <ListBoxItem>dasjd</ListBoxItem>
+                            <ListBoxItem>dasjd</ListBoxItem>
+                            <ListBoxItem>dasjd</ListBoxItem>
+                            <ListBoxItem>dasjd</ListBoxItem>
+                            <ListBoxItem>dasjd</ListBoxItem>
+                            <ListBoxItem>dasjd</ListBoxItem>
+                            <ListBoxItem>dasjd</ListBoxItem>
+                        </ListBox>
+                    </GroupBox>
+                    <GroupBox Header="Arborescence (organisation des dossiers)" Grid.Row="1">
+                        <TextBox Margin="10"/>
+                    </GroupBox>
+                    <GroupBox Header="Nom du fichier" Grid.Row="2">
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox Grid.Column="0" VerticalAlignment="Center">lkjéfkésdkflsdkfélsksda</TextBox>
+                            <Label Grid.Column="1" Content=".ext"/>
+
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </Grid>
+
+        </DockPanel>
     </Grid>
 </Window>
