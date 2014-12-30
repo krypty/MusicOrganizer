@@ -18,8 +18,8 @@
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <Label  Grid.Column="0" Content="Message d'info"/>
-                <Button Grid.Column="1" Padding="5" Content="Prévisualiser"/>
-                <Button Grid.Column="2" Padding="5" Margin="5,0" Content="Exécuter"/>
+                <Button x:Name="btnPreview" Grid.Column="1" Padding="5" Content="Prévisualiser"/>
+                <Button x:Name="btnRun" Grid.Column="2" Padding="5" Margin="5,0" Content="Exécuter"/>
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -38,8 +38,8 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Label Grid.Column="0">Cliquer sur parcourir..</Label>
-                            <Button Grid.Column="1" Padding="5">Parcourir...</Button>
+                            <Label x:Name="lblSourceFolder" Grid.Column="0">Cliquer sur parcourir..</Label>
+                            <Button x:Name="btnSourceFolderBrowse" Grid.Column="1" Padding="5">Parcourir...</Button>
                         </Grid>
 
                     </GroupBox>
@@ -57,11 +57,11 @@
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Label Grid.Column="0">Cliquer sur parcourir..</Label>
-                                <Button Grid.Column="1" Padding="5">Parcourir...</Button>
+                                <Label x:Name="lblDestFolder" Grid.Column="0">Cliquer sur parcourir..</Label>
+                                <Button x:Name="btnDestFolderBrowse" Grid.Column="1" Padding="5">Parcourir...</Button>
                             </Grid>
                             <ScrollViewer Grid.Row="1" Margin="0 5 0 0" VerticalScrollBarVisibility="Auto">
-                                <TreeView>
+                                <TreeView x:Name="tvTrackItems">
                                     <TreeViewItem>
                                         <TreeViewItem.Header>
                                             <CheckBox Content="Label 1"/>
@@ -132,7 +132,7 @@
                     </Grid.RowDefinitions>
 
                     <GroupBox Header="Tags disponibles" Grid.Row="0">
-                        <ListBox >
+                        <ListBox x:Name="lbxTags" >
                             <ListBoxItem>dasjd</ListBoxItem>
                             <ListBoxItem>dasjd</ListBoxItem>
                             <ListBoxItem>dasjd</ListBoxItem>
@@ -143,7 +143,7 @@
                         </ListBox>
                     </GroupBox>
                     <GroupBox Header="Arborescence (organisation des dossiers)" Grid.Row="1">
-                        <TextBox Margin="10"/>
+                        <TextBox x:Name="tbxFolderFormat" Margin="10"/>
                     </GroupBox>
                     <GroupBox Header="Nom du fichier" Grid.Row="2">
                         <Grid Margin="10">
@@ -152,7 +152,7 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBox Grid.Column="0" VerticalAlignment="Center">lkjéfkésdkflsdkfélsksda</TextBox>
+                            <TextBox x:Name="tbxFileFormat" Grid.Column="0" VerticalAlignment="Center">lkjéfkésdkflsdkfélsksda</TextBox>
                             <Label Grid.Column="1" Content=".ext"/>
 
                         </Grid>
