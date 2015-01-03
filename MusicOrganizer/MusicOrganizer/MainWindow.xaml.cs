@@ -55,11 +55,17 @@ namespace MusicOrganizer
 
             if (path != "")
             {
-                List<String> mp3Files = getMP3Files(path);
+                if (path == lblDestFolder.Content.ToString())
+                {
+                    MessageBox.Show("Veuillez sélectionner un dossier de destination différent que le dossier source.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    lblSourceFolder.Content = path;
+                    List<String> mp3Files = getMP3Files(path);
 
-                mp3Files.ForEach(f => lbxFiles.Items.Add(f));
-
-                Console.WriteLine(mp3Files.Count);
+                    mp3Files.ForEach(f => lbxFiles.Items.Add(f));
+                }
             }
 
 
@@ -80,7 +86,22 @@ namespace MusicOrganizer
 
         private void btnDestFolderBrowse_Click(object sender, RoutedEventArgs e)
         {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            dialog.ShowDialog();
 
+            String path = dialog.SelectedPath;
+
+            if (path != "")
+            {
+                if (path == lblSourceFolder.Content.ToString())
+                {
+                    MessageBox.Show("Veuillez sélectionner un dossier de destination différent que le dossier source.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    lblDestFolder.Content = path;
+                }
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -91,17 +112,7 @@ namespace MusicOrganizer
         private void loadAvailableTags()
         {
             List<TagItem> availableTags = TagParserTools.GetAvailableTags();
-
             availableTags.ForEach(t => lbxTags.Items.Add(t));
-        }
-
-        private void lbxTags_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            ListBox lbx = (ListBox)sender;
-            TagItem tagItem = (TagItem)lbx.SelectedItem;
-
-            Console.WriteLine(tagItem.TagValue);
-            tbxFolderFormat.Text = tbxFolderFormat.Text + tagItem.TagValue;
         }
 
         private void lbxTags_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
@@ -109,13 +120,16 @@ namespace MusicOrganizer
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 ListBox lbx = (ListBox)sender;
+
+                if (lbx.SelectedItem == null)
+                {
+                    return;
+                }
                 TagItem tagItem = (TagItem)lbx.SelectedItem;
 
                 DataObject dataObj = new DataObject();
                 dataObj.SetData(typeof(TagItem), tagItem);
                 DragDropEffects effects = DragDrop.DoDragDrop(this.lbxTags, dataObj, DragDropEffects.Copy);
-
-                Console.WriteLine(tagItem.TagValue);
             }
         }
 
@@ -124,13 +138,11 @@ namespace MusicOrganizer
             if (e.Data.GetDataPresent(typeof(TagItem)))
             {
                 e.Effects = DragDropEffects.Copy;
-                Console.WriteLine("dragOver copy");
             }
 
             else
             {
                 e.Effects = DragDropEffects.None;
-                Console.WriteLine("dragOver none");
             }
             e.Handled = true;
         }
@@ -142,16 +154,53 @@ namespace MusicOrganizer
                 e.Effects = DragDropEffects.Copy;
                 TagItem tagItem = (TagItem)e.Data.GetData(typeof(TagItem));
 
-                TextBox tbx = (TextBox)sender;
+                ComboBox tbx = (ComboBox)sender;
                 tbx.Text = tbx.Text + tagItem.TagValue;
-                Console.WriteLine("dragDrop copy");
             }
 
             else
             {
                 e.Effects = DragDropEffects.None;
-                Console.WriteLine("dragDrop none");
             }
         }
+
+        private void updateFilePreview()
+        {
+            bool isDestFolderValid = Directory.Exists(lblDestFolder.Content.ToString());
+            bool isOneFileSelected = this.lbxFiles.SelectedItem != null;
+            bool isTagFileFormatValid = !String.IsNullOrEmpty(this.tbxFileFormat.Text.ToString());
+
+            if (!(isDestFolderValid && isOneFileSelected && isTagFileFormatValid))
+            {
+                lblPreviewFile.Content = "Indiquer un dossier de destination, un format de fichier valide et d'avoir sélectionner un fichier";
+            }
+            else
+            {
+                string originalFilename = lbxFiles.SelectedItem.ToString();
+                string tagFileFormat = tbxFileFormat.Text.ToString();
+                string tagFolderFormat = tbxFolderFormat.Text.ToString();
+                string destFolder = lblDestFolder.Content.ToString();
+
+                TagParser parser = TagParserTools.Create(originalFilename);
+                string tagPreview = parser.Parse(tagFolderFormat, tagFileFormat, destFolder);
+
+                lblPreviewFile.Content = tagPreview;
+            }
+        }
+
+        private void tbxFolderFormat_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            updateFilePreview();
+        }
+
+        private void tbxFileFormat_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            updateFilePreview();
+        }
+        private void lbxFiles_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            updateFilePreview();
+        }
+
     }
 }

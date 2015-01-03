@@ -7,16 +7,18 @@ namespace MusicOrganizer.Tag
 {
     abstract class TagParser
     {
-        private string path;
+        protected string filename;
 
         public TagParser(String path)
         {
-            this.path = path;
+            this.filename = path;
         }
 
         public abstract string Album { get; }
 
         public abstract string Title { get; }
+
+        public abstract string Track { get; }
 
         public abstract string Artist { get; }
 
@@ -26,6 +28,8 @@ namespace MusicOrganizer.Tag
 
         public abstract string DiscNumber { get; }
 
-        public string Path { get { return this.path; } }
+        public string Path { get { return this.filename; } }
+
+        public abstract string Parse(string tagFolderFormat, string tagFileFormat, string destFolder);
     }
 }
