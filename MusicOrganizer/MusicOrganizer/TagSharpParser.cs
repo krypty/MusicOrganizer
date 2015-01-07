@@ -30,43 +30,44 @@ namespace MusicOrganizer.Tag
         #region Properties
         public override string Title
         {
-            get { return this.tagFile.Tag.Title; }
+            get { return getValueOrFallback(this.tagFile.Tag.Title, "title"); }
         }
 
         public override string Track
         {
             //format: 00
-            get { return this.tagFile.Tag.Track.ToString("00"); }
+            get { return getValueOrFallback(this.tagFile.Tag.Track.ToString("00"), "track"); }
         }
 
         public override string Artist
         {
-            get { return this.tagFile.Tag.FirstPerformer; }
+            get { return getValueOrFallback(this.tagFile.Tag.FirstPerformer, "artist"); }
         }
 
         public override string Album
         {
-            get { return this.tagFile.Tag.Album; }
+            get { return getValueOrFallback(this.tagFile.Tag.Album, "album"); }
         }
         public override string Year
         {
             // format: yyyy
-            get { return this.tagFile.Tag.Year.ToString(); }
+            get { return getValueOrFallback(this.tagFile.Tag.Year.ToString(), "year"); }
         }
 
         public override string Genre
         {
-            get { return this.tagFile.Tag.FirstGenre; }
+            get { return getValueOrFallback(this.tagFile.Tag.FirstGenre, "genre"); }
         }
 
         public override string DiscNumber
         {
-            get { return this.tagFile.Tag.Disc.ToString(); }
+            get { return getValueOrFallback(this.tagFile.Tag.Disc.ToString(), "disc number"); }
         }
         #endregion
 
         public override string Parse(string tagFolderFormat, string tagFileFormat, string destFolder)
         {
+            //TODO: renvoie "Unknown XXX ou XXX vaut Artist, Album...
             string extension = System.IO.Path.GetExtension(this.filename);
             destFolder = String.IsNullOrWhiteSpace(destFolder) ? "" : destFolder + @"\";
             tagFolderFormat = String.IsNullOrWhiteSpace(tagFolderFormat) ? "" : tagFolderFormat + @"\";
@@ -107,6 +108,11 @@ namespace MusicOrganizer.Tag
 
                 return availableTags;
             }
+        }
+
+        private string getValueOrFallback(string value, string label)
+        {
+            return String.IsNullOrWhiteSpace(value) ? "[UNKNOWN " + label.ToUpper() + "]" : value;
         }
     }
 }
