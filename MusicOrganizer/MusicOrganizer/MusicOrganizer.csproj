@@ -63,9 +63,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AsyncObservableCollection.cs" />
-    <Compile Include="CheckboxConverter.cs" />
-    <Compile Include="CheckboxTag.cs" />
     <Compile Include="FolderItem.cs" />
     <Compile Include="FolderScanner.cs" />
     <Compile Include="SafeWalk.cs" />
@@ -73,7 +70,6 @@
     <Compile Include="TagParser.cs" />
     <Compile Include="TagParserTools.cs" />
     <Compile Include="TagSharpParser.cs" />
-    <Compile Include="TreeViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

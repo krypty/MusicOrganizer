@@ -21,12 +21,8 @@ using MusicOrganizer.Tag;
 
 namespace MusicOrganizer
 {
-    /// <summary>
-    /// Logique d'interaction pour MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        //public ObservableCollection<TreeViewModel> tata = TreeViewModel.SetTree("Top Level");
         FolderScanner folderScanner;
         public MainWindow()
         {

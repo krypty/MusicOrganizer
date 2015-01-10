@@ -4,25 +4,6 @@
         xmlns:local="clr-namespace:MusicOrganizer;assembly="
         Title="MainWindow" Height="496" Width="1000" Loaded="Window_Loaded">
 
-    <Window.Resources>
-        <ResourceDictionary>
-            <Style x:Key="TreeViewItemStyle" TargetType="TreeViewItem">
-                <Setter Property="IsExpanded" Value="True" />
-                <Setter Property="IsSelected" Value="{Binding IsInitiallySelected, Mode=OneTime}" />
-                <Setter Property="KeyboardNavigation.AcceptsReturn" Value="True" />
-            </Style>
-            <HierarchicalDataTemplate x:Key="CheckBoxItemTemplate" ItemsSource="{Binding Children, Mode=OneTime}">
-                <StackPanel Orientation="Horizontal">
-                    <CheckBox Focusable="False" IsChecked="{Binding IsChecked}" VerticalAlignment="Center" />
-                    <ContentPresenter Content="{Binding Name, Mode=OneTime}" Margin="2,0" />
-                </StackPanel>
-            </HierarchicalDataTemplate>
-
-            <local:CheckboxConverter x:Key="cbx"/>
-        </ResourceDictionary>
-
-    </Window.Resources>
-
     <Grid ShowGridLines="True">
         <DockPanel>
             <Menu DockPanel.Dock="Top">
