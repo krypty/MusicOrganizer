@@ -1,7 +1,7 @@
 ﻿<Window x:Class="MusicOrganizer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-       xmlns:local="clr-namespace:MusicOrganizer;assembly="
+        xmlns:local="clr-namespace:MusicOrganizer;assembly="
         Title="MainWindow" Height="496" Width="1000" Loaded="Window_Loaded">
 
     <Window.Resources>
@@ -39,8 +39,7 @@
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <Label x:Name="lblInfo"  Grid.Column="0" Content="Message d'info"/>
-                <!--<Button x:Name="btnPreview" Grid.Column="1" Padding="5" Content="Prévisualiser"/>-->
-                <Button x:Name="btnRun" Grid.Column="2" Padding="5" Margin="5,0" Content="Exécuter"/>
+                <Button x:Name="btnRun" Grid.Column="2" Padding="5" Margin="5,0" Content="Exécuter" Click="btnRun_Click"/>
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -78,93 +77,32 @@
                         </Grid>
                     </GroupBox>
                     <GroupBox Grid.Row="2" Header="Fichiers à traiter">
-                        <!--<ScrollViewer Grid.Row="1" Margin="0 5 0 0" VerticalScrollBarVisibility="Auto">
-                            <TreeView x:Name="tvTrackItems">
-                                <TreeViewItem>
-                                    <TreeViewItem.Header>
-                                        <CheckBox Content="Label 1"/>
-                                    </TreeViewItem.Header>
-
-                                    <TreeViewItem>
-                                        <TreeViewItem.Header>
-                                            <CheckBox Content="Label 2"/>
-                                        </TreeViewItem.Header>
-
-                                        <TreeViewItem>
-                                            <TreeViewItem.Header>
-                                                <CheckBox Content="Label 3"/>
-                                            </TreeViewItem.Header>
-
-                                        </TreeViewItem>
-                                    </TreeViewItem>
-                                    <TreeViewItem>
-                                        <TreeViewItem.Header>
-                                            <CheckBox Content="Label 2"/>
-                                        </TreeViewItem.Header>
-
-                                        <TreeViewItem>
-                                            <TreeViewItem.Header>
-                                                <CheckBox Content="Label 3"/>
-                                            </TreeViewItem.Header>
-
-                                        </TreeViewItem>
-                                    </TreeViewItem>
-                                    <TreeViewItem>
-                                        <TreeViewItem.Header>
-                                            <CheckBox Content="Label 2"/>
-                                        </TreeViewItem.Header>
-
-                                        <TreeViewItem>
-                                            <TreeViewItem.Header>
-                                                <CheckBox Content="Label 3"/>
-                                            </TreeViewItem.Header>
-
-                                        </TreeViewItem>
-                                    </TreeViewItem>
-                                    <TreeViewItem>
-                                        <TreeViewItem.Header>
-                                            <CheckBox Content="Label 2"/>
-                                        </TreeViewItem.Header>
-
-                                        <TreeViewItem>
-                                            <TreeViewItem.Header>
-                                                <CheckBox Content="Label 3"/>
-                                            </TreeViewItem.Header>
-
-                                        </TreeViewItem>
-                                    </TreeViewItem>
-
-                                </TreeViewItem>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*" />
+                            </Grid.RowDefinitions>
+                            <Grid.Resources>
+                                <HierarchicalDataTemplate x:Key="ChildTemplate" ItemsSource="{Binding  Path=ChildFolderItem}" >
+                                    <WrapPanel Orientation="Horizontal">
+                                        <CheckBox IsChecked="{Binding Path=IsChecked}" />
+                                        <TextBlock Margin="5,0"  FontStyle="Italic" Text="{Binding Path=FolderLabel}" />
+                                    </WrapPanel>
+                                </HierarchicalDataTemplate>
+                                <HierarchicalDataTemplate x:Key="NameTemplate" ItemsSource="{Binding  Path=ChildFolderItem}" DataType="local:FolderItem"  ItemTemplate="{StaticResource ChildTemplate}">
+                                    <WrapPanel Orientation="Horizontal">
+                                        <CheckBox IsChecked="{Binding Path=IsChecked}" />
+                                        <TextBlock Margin="5,0" Text="{Binding Path=FolderLabel}" FontWeight="Bold" />
+                                    </WrapPanel>
+                                </HierarchicalDataTemplate>
+                            </Grid.Resources>
+                            <TreeView  Grid.Row="0" ItemsSource="{Binding}" ItemTemplate="{StaticResource NameTemplate}" x:Name="treeViewFolders" SelectedItemChanged="treeViewFolders_SelectedItemChanged">
+                                <TreeView.ItemContainerStyle>
+                                    <Style TargetType="TreeViewItem">
+                                        <Setter Property="IsExpanded" Value="{Binding Path=IsExpanded, Mode=TwoWay}" />
+                                    </Style>
+                                </TreeView.ItemContainerStyle>
                             </TreeView>
-                        </ScrollViewer>-->
-
-                        <!--<TreeView Grid.Row="1" Margin="0 5 0 0" x:Name="treeView1"
-                  ItemContainerStyle="{StaticResource TreeViewItemStyle}"
-                  ItemTemplate="{StaticResource CheckBoxItemTemplate}" />-->
-
-
-                        <!--<TreeView Grid.Row="1" Margin="0 5 0 0" x:Name="treeView1">
-                            <TreeView.Resources>
-                                <Style TargetType="TreeViewItem">
-                                    <Setter Property="HeaderTemplate">
-                                        <Setter.Value>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <CheckBox Focusable="False" IsChecked="{Binding Path=Tag,RelativeSource={RelativeSource AncestorLevel=1,AncestorType=TreeViewItem,Mode=FindAncestor},Converter={StaticResource cbx}}" VerticalAlignment="Center"/>
-                                                   -->
-                        <!--<Image Width="25" Height="15" Source="{Binding Path=Tag,RelativeSource={RelativeSource AncestorLevel=1,AncestorType=TreeViewItem,Mode=FindAncestor},Converter={StaticResource img}}"></Image>-->
-                        <!--
-                                                    <TextBlock Text="{Binding}"></TextBlock>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </TreeView.Resources>
-                        </TreeView>-->
-
-
-                        <ListBox Grid.Row="1" Margin="0 5 0 0" x:Name="lbxFiles" SelectionChanged="lbxFiles_SelectionChanged" />
+                        </Grid>
                     </GroupBox>
 
                 </Grid>

@@ -26,28 +26,21 @@ namespace MusicOrganizer
     /// </summary>
     public partial class MainWindow : Window
     {
-        public ObservableCollection<TreeViewModel> tata = TreeViewModel.SetTree("Top Level");
+        //public ObservableCollection<TreeViewModel> tata = TreeViewModel.SetTree("Top Level");
+        FolderScanner folderScanner;
         public MainWindow()
         {
             InitializeComponent();
+
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+            folderScanner = new FolderScanner(path);
+            treeViewFolders.DataContext = folderScanner.Items;
+
+            lblSourceFolder.Content = path;
         }
 
         private void btnSourceFolderBrowse_Click(object sender, RoutedEventArgs e)
         {
-            //TagItem tagItem = new TagItem("alal", 5);
-            //lbxTags.Items.Add(tagItem);
-
-            ////String path = @"C:\Users\Gary\Dropbox\HE_Arc\3emeAnnee\CSharp\projetSolo\";
-            //String path = @"C:\Android\SDK";
-            //FolderScanner fs = new FolderScanner(path, treeView1);
-
-            ////treeView1.ItemsSource = tata;
-            ////fs.doWork();
-
-            //fs.Populate("Test dossier", path, treeView1, null, false);
-
-            //this.lblInfo.Content = "Running...";
-
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
             dialog.ShowDialog();
 
@@ -62,9 +55,9 @@ namespace MusicOrganizer
                 else
                 {
                     lblSourceFolder.Content = path;
-                    List<String> mp3Files = getMP3Files(path);
 
-                    mp3Files.ForEach(f => lbxFiles.Items.Add(f));
+                    folderScanner = new FolderScanner(path);
+                    treeViewFolders.DataContext = folderScanner.Items;
                 }
             }
 
@@ -167,7 +160,7 @@ namespace MusicOrganizer
         private void updateFilePreview()
         {
             bool isDestFolderValid = Directory.Exists(lblDestFolder.Content.ToString());
-            bool isOneFileSelected = this.lbxFiles.SelectedItem != null;
+            bool isOneFileSelected = this.treeViewFolders.SelectedItem != null;
             bool isTagFileFormatValid = !String.IsNullOrEmpty(this.tbxFileFormat.Text.ToString());
 
             if (!(isDestFolderValid && isOneFileSelected && isTagFileFormatValid))
@@ -176,7 +169,9 @@ namespace MusicOrganizer
             }
             else
             {
-                string originalFilename = lbxFiles.SelectedItem.ToString();
+                FolderItem selectedFolderItem = (FolderItem)this.treeViewFolders.SelectedItem;
+                string originalFilename = selectedFolderItem.Path;
+
                 string tagFileFormat = tbxFileFormat.Text.ToString();
                 string tagFolderFormat = tbxFolderFormat.Text.ToString();
                 string destFolder = lblDestFolder.Content.ToString();
@@ -188,6 +183,7 @@ namespace MusicOrganizer
             }
         }
 
+        // TODO: fusionner tbxFolderFormat_TextChanged et tbxFileFormat_TextChanged
         private void tbxFolderFormat_TextChanged(object sender, TextChangedEventArgs e)
         {
             updateFilePreview();
@@ -197,9 +193,18 @@ namespace MusicOrganizer
         {
             updateFilePreview();
         }
-        private void lbxFiles_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        private void treeViewFolders_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             updateFilePreview();
+        }
+
+        private void btnRun_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in folderScanner.GetSelectedItems())
+            {
+                Console.WriteLine("[SELECTTED] " + item);
+            }
         }
 
     }
