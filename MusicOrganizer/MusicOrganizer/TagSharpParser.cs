@@ -68,14 +68,11 @@ namespace MusicOrganizer.Tag
 
         public override string Parse(string tagFolderFormat, string tagFileFormat, string destFolder)
         {
-            //TODO: replace invalid char in filename and foldername
-            //TODO: renvoie "Unknown XXX ou XXX vaut Artist, Album... 
             string extension = System.IO.Path.GetExtension(this.filename);
             destFolder = String.IsNullOrWhiteSpace(destFolder) ? "" : destFolder + @"\";
             tagFolderFormat = String.IsNullOrWhiteSpace(tagFolderFormat) ? "" : tagFolderFormat + @"\";
 
             string parsedFilename = tagFolderFormat + tagFileFormat + extension;
-            //Console.WriteLine("parsedFilename in: " + parsedFilename);
 
             foreach (KeyValuePair<string, Func<string>> entry in dictTagNameToTagValue)
             {
@@ -84,7 +81,6 @@ namespace MusicOrganizer.Tag
 
             parsedFilename = destFolder + TagParserTools.cleanFilename(parsedFilename);
 
-            //Console.WriteLine("parsedFilename out: " + parsedFilename);
             return parsedFilename;
         }
 

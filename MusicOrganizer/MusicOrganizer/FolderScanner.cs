@@ -24,7 +24,6 @@ namespace MusicOrganizer
 
         public ICollection<string> GetSelectedItems()
         {
-            //TODO: thread
             HashSet<string> selectedItems = new HashSet<string>();
             FolderItem root = this.rootFolders[0];
             if (root.IsChecked.HasValue && root.IsChecked.Value == true)

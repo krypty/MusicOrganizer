@@ -13,8 +13,8 @@ namespace MusicOrganizer
     public class FolderItem : INotifyPropertyChanged
     {
         // dummy créé pour pouvoir déplier les dossiers. On les peuple seulement quand ils sont expanded pour la première fois
-        private static FolderItem dummy = new FolderItem("*?-Dummy*?-", false, null);
-        public static Func<string, bool> FilesWithWantedExtensionPredicate = (file) => file.ToLower().EndsWith("mp3"); //|| file.ToLower().EndsWith("cfg");
+        private static FolderItem dummy = new FolderItem("*?-Dummy*?-", false, null); // le nom choisi est suffisament improbable (et surtout invalide --> *?) 
+        public static Func<string, bool> FilesWithWantedExtensionPredicate = (file) => file.ToLower().EndsWith("mp3"); // j'utilise cette manière de faire car il sera facile d'ajouter d'autres extensions
 
         private bool? _isChecked = false;
         private bool _isFolder = true;
@@ -25,6 +25,7 @@ namespace MusicOrganizer
         private bool mustBeExpanded = true;
         private bool _isExpanded = false;
 
+        // Quand on déroule un item on va chercher les fichiers et dossiers qu'il contient et peupler le modèle (l'enfant déroulé)
         public bool IsExpanded
         {
             get { return _isExpanded; }
@@ -94,6 +95,8 @@ namespace MusicOrganizer
             }
         }
 
+        //source: http://www.thebestcsharpprogrammerintheworld.com/blogs/Treeview-with-checkbox-in-WPF-using-csharp.aspx
+        // j'ai adapté l'exemple pour utiliser une arborescence de fichiers/dossiers.
         void SetIsChecked(bool? value, bool updateChildren, bool updateParent)
         {
             if (value == _isChecked) return;

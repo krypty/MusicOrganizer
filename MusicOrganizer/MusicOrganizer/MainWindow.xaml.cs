@@ -56,21 +56,6 @@ namespace MusicOrganizer
                     treeViewFolders.DataContext = folderScanner.Items;
                 }
             }
-
-
-        }
-
-        private List<String> getMP3Files(string path)
-        {
-            List<String> mp3Files = new List<string>();
-
-            foreach (String file in Directory.GetFiles(path, "*.mp3"))
-            {
-                Console.WriteLine("f: " + file);
-                mp3Files.Add(file);
-            }
-
-            return mp3Files;
         }
 
         private void btnDestFolderBrowse_Click(object sender, RoutedEventArgs e)
@@ -193,6 +178,7 @@ namespace MusicOrganizer
 
         private void treeViewFolders_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            // on ne met à jour que s'il s'agit d'un enfant, donc d'un fichier
             FolderItem selectedFolderItem = (FolderItem)this.treeViewFolders.SelectedItem;
             if (selectedFolderItem.ChildFolderItem.Count == 0)
             {
@@ -225,20 +211,10 @@ namespace MusicOrganizer
             String tagFileFormat = tbxFileFormat.Text;
             String destFolder = lblDestFolder.Content.ToString();
 
+            // Lancement d'une tâche de copie asynchrone
             WorkInProgressWindow window = new WorkInProgressWindow(folderScanner, tagFolderFormat, tagFileFormat, destFolder);
             window.ShowAndRun();
         }
-
-        void worker_OnCompleteEvent()
-        {
-            Console.WriteLine("C'est finit !!");
-        }
-
-        void worker_ProgressChanged(int percentage)
-        {
-            Console.WriteLine("hello: " + percentage);
-        }
-
 
         private bool userHasConfirm()
         {

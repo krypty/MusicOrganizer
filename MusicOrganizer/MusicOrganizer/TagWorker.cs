@@ -27,6 +27,8 @@ namespace MusicOrganizer
 
         private BackgroundWorker worker;
 
+
+        // Events du backgroundworker qu'on rend accessible à l'exterieur mais en encapsulant l'objet worker
         public delegate void PercentageChangedEventHandler(int percentage);
         public event PercentageChangedEventHandler ProgressChanged;
 
@@ -53,7 +55,7 @@ namespace MusicOrganizer
         {
             if (e.Error != null)
             {
-                MessageBox.Show("Erreur: " + e.Error.ToString());
+                MessageBox.Show("Erreur: " + e.Error.ToString(), "Une erreur s'est produite", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -75,8 +77,6 @@ namespace MusicOrganizer
         {
             this.worker.CancelAsync();
         }
-
-
 
         private Dictionary<string, string> CreateDictFromTags()
         {

@@ -52,31 +52,5 @@ namespace MusicOrganizer.Tag
             {"*",""}
             
         };
-
-
-        private static string ReplaceInvalidFileNameChars(string s, string replacement = "")
-        {
-            return Regex.Replace(s,
-              "[" + Regex.Escape(
-                Path.VolumeSeparatorChar +
-                Path.DirectorySeparatorChar +
-                Path.AltDirectorySeparatorChar +
-                ":" + //added to cover Windows & Mac in case code is run on UNIX
-                "\\" + //added for future platforms "/" + //same as previous one
-                "<" +
-                ">" +
-                "|" +
-                "\b" +
-                "" +
-                "\t" + //based on characters not allowed on Windows
-                new string(Path.GetInvalidPathChars()) + //seems to miss *, ? and "
-                "*" +
-                "?" +
-                "\""
-                ) + "]",
-              replacement, //can even use a replacement string of any length
-              RegexOptions.IgnoreCase);
-            //not using System.IO.Path.InvalidPathChars (deprecated insecure API)
-        }
     }
 }
