@@ -41,6 +41,7 @@ namespace MusicOrganizer.Tag
 
         public override string Artist
         {
+            //TODO: si first performer est vide regarder si on peut trouver une alternative
             get { return getValueOrFallback(this.tagFile.Tag.FirstPerformer, "artist"); }
         }
 
@@ -51,7 +52,7 @@ namespace MusicOrganizer.Tag
         public override string Year
         {
             // format: yyyy
-            get { return getValueOrFallback(this.tagFile.Tag.Year.ToString(), "year"); }
+            get { return getValueOrFallback((int)this.tagFile.Tag.Year, "year"); }
         }
 
         public override string Genre
@@ -67,20 +68,23 @@ namespace MusicOrganizer.Tag
 
         public override string Parse(string tagFolderFormat, string tagFileFormat, string destFolder)
         {
-            //TODO: renvoie "Unknown XXX ou XXX vaut Artist, Album...
+            //TODO: replace invalid char in filename and foldername
+            //TODO: renvoie "Unknown XXX ou XXX vaut Artist, Album... 
             string extension = System.IO.Path.GetExtension(this.filename);
             destFolder = String.IsNullOrWhiteSpace(destFolder) ? "" : destFolder + @"\";
             tagFolderFormat = String.IsNullOrWhiteSpace(tagFolderFormat) ? "" : tagFolderFormat + @"\";
 
-            string parsedFilename = destFolder + tagFolderFormat + tagFileFormat + extension;
-            Console.WriteLine("parsedFilename in: " + parsedFilename);
+            string parsedFilename = tagFolderFormat + tagFileFormat + extension;
+            //Console.WriteLine("parsedFilename in: " + parsedFilename);
 
             foreach (KeyValuePair<string, Func<string>> entry in dictTagNameToTagValue)
             {
                 parsedFilename = parsedFilename.Replace(entry.Key, entry.Value());
             }
 
-            Console.WriteLine("parsedFilename out: " + parsedFilename);
+            parsedFilename = destFolder + TagParserTools.cleanFilename(parsedFilename);
+
+            //Console.WriteLine("parsedFilename out: " + parsedFilename);
             return parsedFilename;
         }
 
@@ -113,6 +117,11 @@ namespace MusicOrganizer.Tag
         private string getValueOrFallback(string value, string label)
         {
             return String.IsNullOrWhiteSpace(value) ? "[UNKNOWN " + label.ToUpper() + "]" : value;
+        }
+
+        private string getValueOrFallback(int value, string label)
+        {
+            return value == 0 || value == -1 ? "[UNKNOWN " + label.ToUpper() + "]" : value.ToString();
         }
     }
 }

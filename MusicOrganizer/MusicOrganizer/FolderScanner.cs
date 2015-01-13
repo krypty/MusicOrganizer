@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MusicOrganizer
 {
-    class FolderScanner
+    public class FolderScanner
     {
         private ObservableCollection<FolderItem> rootFolders;
         private string rootFolderName;

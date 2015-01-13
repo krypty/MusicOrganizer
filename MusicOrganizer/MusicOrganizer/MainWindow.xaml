@@ -53,7 +53,7 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Label x:Name="lblDestFolder" Grid.Column="0">Cliquer sur parcourir..</Label>
+                            <Label x:Name="lblDestFolder" Grid.Column="0" FontWeight="Bold">Cliquer sur parcourir..</Label>
                             <Button x:Name="btnDestFolderBrowse" Grid.Column="1" Padding="5" Click="btnDestFolderBrowse_Click">Parcourir...</Button>
                         </Grid>
                     </GroupBox>

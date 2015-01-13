@@ -89,6 +89,7 @@ namespace MusicOrganizer
                 else
                 {
                     lblDestFolder.Content = path;
+                    lblDestFolder.FontWeight = FontWeights.Normal;
                 }
             }
         }
@@ -192,15 +193,57 @@ namespace MusicOrganizer
 
         private void treeViewFolders_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            updateFilePreview();
+            FolderItem selectedFolderItem = (FolderItem)this.treeViewFolders.SelectedItem;
+            if (selectedFolderItem.ChildFolderItem.Count == 0)
+            {
+                updateFilePreview();
+            }
         }
 
         private void btnRun_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var item in folderScanner.GetSelectedItems())
+            bool isDestFolderValid = Directory.Exists(lblDestFolder.Content.ToString());
+            bool isTagFileFormatValid = !String.IsNullOrEmpty(this.tbxFileFormat.Text.ToString());
+            bool isTagFolderFormatValid = !String.IsNullOrEmpty(this.tbxFolderFormat.Text.ToString());
+
+            if (isDestFolderValid && isTagFileFormatValid && isTagFolderFormatValid)
             {
-                Console.WriteLine("[SELECTTED] " + item);
+                if (userHasConfirm())
+                {
+                    processCopy();
+                }
             }
+            else
+            {
+                MessageBox.Show("Veuillez vérifier que:\n- Vous avez un dossier de destination valide\n- Le format saisi des fichiers est valide\n- Le format saisi des dossiers est valide", "Informations manquantes ou invalides", MessageBoxButton.OK);
+            }
+        }
+
+        private void processCopy()
+        {
+            String tagFolderFormat = tbxFolderFormat.Text;
+            String tagFileFormat = tbxFileFormat.Text;
+            String destFolder = lblDestFolder.Content.ToString();
+
+            WorkInProgressWindow window = new WorkInProgressWindow(folderScanner, tagFolderFormat, tagFileFormat, destFolder);
+            window.ShowAndRun();
+        }
+
+        void worker_OnCompleteEvent()
+        {
+            Console.WriteLine("C'est finit !!");
+        }
+
+        void worker_ProgressChanged(int percentage)
+        {
+            Console.WriteLine("hello: " + percentage);
+        }
+
+
+        private bool userHasConfirm()
+        {
+            MessageBoxResult mbxResult = System.Windows.MessageBox.Show("En cas de doublons les fichiers présents seront écrasés dans le dossier de destination.\nLes éventuels caractères invalides seront remplacés par un équivalent valide. Exemple: AC/DC --> AC_DC\nEtes-vous sûr de vouloir continuer ?", "Ecrasement possible de fichiers existants", System.Windows.MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            return mbxResult == MessageBoxResult.Yes;
         }
 
     }
