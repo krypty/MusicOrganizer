@@ -13,11 +13,21 @@ namespace MusicOrganizer.Tag
     /// </summary>
     class TagParserTools
     {
+        /// <summary>
+        /// Méthode qui se fait passer pour une Factory. Comme ça l'air de rien.
+        /// Permet de créer un parser sans se soucier du fournisseur de tags (TagSharpParser ou un autre)
+        /// </summary>
+        /// <param name="path">Nom du fichier à parser</param>
+        /// <returns></returns>
         public static TagParser Create(String path)
         {
             return new TagSharpParser(path);
         }
 
+        /// <summary>
+        /// Renvoie la liste des tags gérés par la librairie utilisée
+        /// </summary>
+        /// <returns></returns>
         public static List<TagItem> GetAvailableTags()
         {
             return TagSharpParser.AVAILABLE_TAGS;
@@ -30,6 +40,12 @@ namespace MusicOrganizer.Tag
         //}
 
 
+        /// <summary>
+        /// Méthode qui permet d'enlever les caractères invalides qui pourrait provenir d'un tag
+        /// Exemple: "AC/DC" est un nom invalide à cause du caractère '/'. Cette fonction va le remplacer par un équivalent valide
+        /// </summary>
+        /// <param name="raw">nom du fichier avec éventuellement des caractères invalides</param>
+        /// <returns></returns>
         public static string cleanFilename(string raw)
         {
             string cleaned = raw;
@@ -40,6 +56,7 @@ namespace MusicOrganizer.Tag
             return cleaned;
         }
 
+        // liste des caractères invalides: http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247%28v=vs.85%29.aspx#paths
         protected static Dictionary<String, String> INVALID_FILENAME_CHAR = new Dictionary<string, string>()
         {
             {"<",""},
@@ -47,7 +64,7 @@ namespace MusicOrganizer.Tag
             {":",""},
             {"\"","''"}, 
             {"/","_"},
-            //{"\\","_"}, // celui-ci on l'enlève si l'utilisateur veut pouvoir faire une arborescence.
+            //{"\\","_"}, // celui-ci on l'enlève si l'utilisateur veut pouvoir faire une arborescence. Exemple: <artist>\<album>
             {"?",""},
             {"*",""}
             

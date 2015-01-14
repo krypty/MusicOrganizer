@@ -17,7 +17,7 @@ namespace MusicOrganizer
 
         /// <summary
         /// </summary>
-        /// <param name="tagValue">Utilisé en interne %title% par exemple</param>
+        /// <param name="tagValue">Utilisé en interne <title> par exemple</param>
         /// <param name="tagLabel">Utilisé pour l'affichage Titre par exemple</param>
         public TagItem(string tagValue, string tagLabel)
         {

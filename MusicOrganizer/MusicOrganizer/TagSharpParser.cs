@@ -17,6 +17,8 @@ namespace MusicOrganizer.Tag
         {
             this.tagFile = TagLib.File.Create(filename);
 
+            // dictionnaire qui associe un tag avec la VALEUR évaluée du tag en question
+            // exemple: <title> -> Back In Black
             this.dictTagNameToTagValue = new Dictionary<string, Func<String>>();
             dictTagNameToTagValue.Add("<title>", () => Title);
             dictTagNameToTagValue.Add("<track>", () => Track);
@@ -27,6 +29,7 @@ namespace MusicOrganizer.Tag
             dictTagNameToTagValue.Add("<disc_number>", () => DiscNumber);
         }
 
+        // on utilise ici des fonctions de fallback si jamais la valeur du tag est vide
         #region Properties
         public override string Title
         {
@@ -74,6 +77,8 @@ namespace MusicOrganizer.Tag
 
             string parsedFilename = tagFolderFormat + tagFileFormat + extension;
 
+            //TODO: améliorer cet algorithme car String est immuable et on recrée un String à chaque remplacement
+            // ici, on remplace les tags par leur valeur
             foreach (KeyValuePair<string, Func<string>> entry in dictTagNameToTagValue)
             {
                 parsedFilename = parsedFilename.Replace(entry.Key, entry.Value());
@@ -110,6 +115,7 @@ namespace MusicOrganizer.Tag
             }
         }
 
+        #region fonction de fallback en cas de tag vide/null ou incorrect
         private string getValueOrFallback(string value, string label)
         {
             return String.IsNullOrWhiteSpace(value) ? "[UNKNOWN " + label.ToUpper() + "]" : value;
@@ -119,5 +125,6 @@ namespace MusicOrganizer.Tag
         {
             return value == 0 || value == -1 ? "[UNKNOWN " + label.ToUpper() + "]" : value.ToString();
         }
+        #endregion
     }
 }

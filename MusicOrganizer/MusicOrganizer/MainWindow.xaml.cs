@@ -29,7 +29,11 @@ namespace MusicOrganizer
             InitializeComponent();
 
             string path = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+
+            // On utilise un modèle personalisé arborescent qui liste hiérarchiquement les fichiers musicaux d'un dossier donné
             folderScanner = new FolderScanner(path);
+
+            // treeViewFolder est un treeview classique auquel on a rajouté un checkbox bindé sur la propriété IsChecked du modèle FolderScanner
             treeViewFolders.DataContext = folderScanner.Items;
 
             lblSourceFolder.Content = path;
@@ -46,7 +50,7 @@ namespace MusicOrganizer
             {
                 if (path == lblDestFolder.Content.ToString())
                 {
-                    MessageBox.Show("Veuillez sélectionner un dossier de destination différent que le dossier source.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Veuillez sélectionner un dossier de destination différent que le dossier de destination.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {
@@ -90,6 +94,7 @@ namespace MusicOrganizer
             availableTags.ForEach(t => lbxTags.Items.Add(t));
         }
 
+        # region DragAndDrop pour les tags
         private void lbxTags_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -138,7 +143,12 @@ namespace MusicOrganizer
                 e.Effects = DragDropEffects.None;
             }
         }
+        #endregion
 
+        /// <summary>
+        /// Méthode qui va mettre à jour l'aperçu.
+        /// Cet aperçu prend un fichier sélectionné et montre à quoi il ressemblera une fois converti
+        /// </summary>
         private void updateFilePreview()
         {
             bool isDestFolderValid = Directory.Exists(lblDestFolder.Content.ToString());

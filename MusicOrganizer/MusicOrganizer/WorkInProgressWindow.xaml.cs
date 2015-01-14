@@ -39,7 +39,6 @@ namespace MusicOrganizer
             this.tagFileFormat = tagFileFormat;
             this.destFolder = destFolder;
 
-
             this.worker = new TagWorker(folderScanner, tagFolderFormat, tagFileFormat, destFolder);
 
             worker.ProgressChanged += worker_ProgressChanged;

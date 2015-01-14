@@ -10,8 +10,13 @@ using System.Windows;
 
 namespace MusicOrganizer
 {
+    /// <summary>
+    /// Classe qui va lancer une copie en lot de tous les fichiers musicaux qu'on souhaite renommer/modifier
+    /// Cette classe propose un event pour signaler l'évolution de l'avancement de la copie et un autre indiquer la fin des opérations
+    /// </summary>
     class TagWorker
     {
+        // on décide de ne pas écraser les fichiers déjà existant
         private const bool MUST_OVERWRITE = false;
 
         private int progressCopy = 0;
@@ -80,6 +85,7 @@ namespace MusicOrganizer
 
         private Dictionary<string, string> CreateDictFromTags()
         {
+            // on indique que la progression se trouve dans un état inderterminé car on ne connait pas la progression de cet algorithme récursif
             this.IsProgressIndeterminate = true;
             this.worker.ReportProgress(0);
 
@@ -98,6 +104,7 @@ namespace MusicOrganizer
         {
             Dictionary<string, string> dicFileToProcess = CreateDictFromTags();
 
+            // cette fois-ci on connaît la fin de l'opération. Elle est terminé que le nombre d'élément traité est égal au nombre d'élément total dans le dictionnaire
             this.IsProgressIndeterminate = false;
             this.worker.ReportProgress(0);
 
@@ -106,7 +113,8 @@ namespace MusicOrganizer
 
             foreach (KeyValuePair<string, string> entry in dicFileToProcess)
             {
-                if(worker.CancellationPending)
+                // si l'utilisateur a demandé l'annulation, on arrête la copie
+                if (worker.CancellationPending)
                 {
                     e.Cancel = true;
                     break;
@@ -128,7 +136,7 @@ namespace MusicOrganizer
                     {
                         System.IO.File.Copy(srcFilename, destFilename, true);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message, "Erreur lors de la copie !", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
