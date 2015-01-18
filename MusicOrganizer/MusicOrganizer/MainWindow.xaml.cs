@@ -134,8 +134,8 @@ namespace MusicOrganizer
                 e.Effects = DragDropEffects.Copy;
                 TagItem tagItem = (TagItem)e.Data.GetData(typeof(TagItem));
 
-                ComboBox tbx = (ComboBox)sender;
-                tbx.Text = tbx.Text + tagItem.TagValue;
+                ComboBox cbx = (ComboBox)sender;
+                cbx.Text = cbx.Text + tagItem.TagValue;
             }
 
             else
@@ -232,5 +232,9 @@ namespace MusicOrganizer
             return mbxResult == MessageBoxResult.Yes;
         }
 
+        private void miClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
