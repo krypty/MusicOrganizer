@@ -18,6 +18,7 @@ namespace MusicOrganizer
 
         private bool? _isChecked = false;
         private bool _isFolder = true;
+
         private FolderItem _parent = null;
         private string _folderLabel = "[BAD_FOLDER_NAME]";
         private string _path = "[BAD_PATH]";
@@ -186,5 +187,12 @@ namespace MusicOrganizer
             }
             return selectedItem;
         }
+
+
+        public bool IsFolder
+        {
+            get { return _isFolder; }
+        }
+
     }
 }

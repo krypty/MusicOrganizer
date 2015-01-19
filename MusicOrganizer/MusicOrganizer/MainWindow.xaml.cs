@@ -152,7 +152,7 @@ namespace MusicOrganizer
         private void updateFilePreview()
         {
             bool isDestFolderValid = Directory.Exists(lblDestFolder.Content.ToString());
-            bool isOneFileSelected = this.treeViewFolders.SelectedItem != null;
+            bool isOneFileSelected = this.treeViewFolders.SelectedItem != null && ((FolderItem)this.treeViewFolders.SelectedItem).IsFolder == false;
             bool isTagFileFormatValid = !String.IsNullOrEmpty(this.tbxFileFormat.Text.ToString());
 
             if (!(isDestFolderValid && isOneFileSelected && isTagFileFormatValid))
