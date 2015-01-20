@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace MusicOrganizer
 {
-    /// <summary>
-    /// Interaction logic for WorkInProgressWindow.xaml
-    /// </summary>
     public partial class WorkInProgressWindow : Window
     {
         private TagWorker worker;

@@ -17,7 +17,7 @@ namespace MusicOrganizer.Tag
         {
             this.tagFile = TagLib.File.Create(filename);
 
-            // dictionnaire qui associe un tag avec la VALEUR évaluée du tag en question
+            // dictionnaire qui associe un tag avec la VALEUR évaluée du tag en question (delegate)
             // exemple: <title> -> Back In Black
             this.dictTagNameToTagValue = new Dictionary<string, Func<String>>();
             dictTagNameToTagValue.Add("<title>", () => Title);
@@ -89,6 +89,9 @@ namespace MusicOrganizer.Tag
             return parsedFilename;
         }
 
+        /// <summary>
+        /// Fonction qui va peupler les tags disponibles/supportés par la librairie en question
+        /// </summary>
         private static void populateAvailableTags()
         {
             availableTags.Add(new TagItem("<title>", "Titre"));
@@ -115,7 +118,7 @@ namespace MusicOrganizer.Tag
             }
         }
 
-        #region fonction de fallback en cas de tag vide/null ou incorrect
+        #region fonctions de fallback en cas de tag vide/null ou incorrect
         private string getValueOrFallback(string value, string label)
         {
             return String.IsNullOrWhiteSpace(value) ? "[UNKNOWN " + label.ToUpper() + "]" : value;

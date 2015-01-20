@@ -103,14 +103,6 @@
                                 <ComboBoxItem Content="&lt;artist&gt;\(&lt;year&gt;) &lt;album&gt;"/>
                                 <ComboBoxItem Content="&lt;artist&gt;\&lt;album&gt; - &lt;year&gt;"/>
                             </ComboBox>
-                            <!--<Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Content="Aperçu: "/>
-                                <Label Grid.Column="1" x:Name="lblPreviewFolder" Content="&lt;Sélectionner un fichier dans la liste pour avoir un aperçu&gt;"/>
-                            </Grid>-->
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Header="Nom du fichier" Grid.Row="2">

@@ -16,34 +16,35 @@ namespace MusicOrganizer
         private static FolderItem dummy = new FolderItem("*?-Dummy*?-", false, null); // le nom choisi est suffisament improbable (et surtout invalide --> *?) 
         public static Func<string, bool> FilesWithWantedExtensionPredicate = (file) => file.ToLower().EndsWith("mp3"); // j'utilise cette manière de faire car il sera facile d'ajouter d'autres extensions
 
-        private bool? _isChecked = false;
-        private bool _isFolder = true;
+        private bool? isChecked = false;
+        private bool isFolder = true;
 
         private FolderItem _parent = null;
-        private string _folderLabel = "[BAD_FOLDER_NAME]";
-        private string _path = "[BAD_PATH]";
+        private string folderLabel = "[BAD_FOLDER_NAME]";
+        private string path = "[BAD_PATH]";
 
+        // booléen qui vaut vrai si on a jamais déroulé (expand) un dossier. Permet de tester si on doit peupler ou pas ce dossier (treeviewitem) avec ses enfants
         private bool mustBeExpanded = true;
-        private bool _isExpanded = false;
+        private bool isExpanded = false;
 
         // Quand on déroule un item on va chercher les fichiers et dossiers qu'il contient et peupler le modèle (l'enfant déroulé)
         public bool IsExpanded
         {
-            get { return _isExpanded; }
+            get { return isExpanded; }
             set
             {
                 if (mustBeExpanded)
                 {
-                    // remove dummy
+                    // on supprime le dossier Dummy
                     childFolderItem.RemoveAt(0);
 
-                    foreach (string subFolderName in SafeWalk.GetDirectories(_path))
+                    foreach (string subFolderName in SafeWalk.GetDirectories(path))
                     {
                         FolderItem subFolderItem = new FolderItem(subFolderName, false, this);
                         this.ChildFolderItem.Add(subFolderItem);
                     }
 
-                    foreach (string fileName in SafeWalk.EnumerateFiles(_path, "*.*", SearchOption.TopDirectoryOnly).Where(FilesWithWantedExtensionPredicate).ToList())
+                    foreach (string fileName in SafeWalk.EnumerateFiles(path, "*.*", SearchOption.TopDirectoryOnly).Where(FilesWithWantedExtensionPredicate).ToList())
                     {
                         bool isFolder = false;
                         FolderItem subFolderItem = new FolderItem(fileName, false, this, isFolder);
@@ -52,22 +53,22 @@ namespace MusicOrganizer
 
                     mustBeExpanded = false;
                 }
-                _isExpanded = value;
+                isExpanded = value;
             }
         }
 
         public string FolderLabel
         {
-            get { return _folderLabel; }
-            set { _folderLabel = value; }
+            get { return folderLabel; }
+            set { folderLabel = value; }
         }
 
         public bool? IsChecked
         {
-            get { return _isChecked; }
+            get { return isChecked; }
             set { SetIsChecked(value, true, true); }
         }
-        public string Path { get { return _path; } set { _path = value; } }
+        public string Path { get { return path; } set { path = value; } }
 
         private ObservableCollection<FolderItem> childFolderItem;
         public ObservableCollection<FolderItem> ChildFolderItem
@@ -76,17 +77,22 @@ namespace MusicOrganizer
             set { childFolderItem = value; }
         }
 
+        public bool IsFolder
+        {
+            get { return isFolder; }
+        }
+
         public FolderItem(string path, bool isChecked, FolderItem parent, bool isFolder = true)
         {
-            this._path = path;
-            this._isChecked = isChecked;
+            this.path = path;
+            this.isChecked = isChecked;
             this._parent = parent;
-            this._isFolder = isFolder;
+            this.isFolder = isFolder;
 
-            this._folderLabel = path.Substring(path.LastIndexOf(@"\") + 1);
+            this.folderLabel = path.Substring(path.LastIndexOf(@"\") + 1);
             this.childFolderItem = new ObservableCollection<FolderItem>();
 
-            if (_isFolder)
+            if (isFolder)
             {
                 this.ChildFolderItem.Add(FolderItem.dummy);
             }
@@ -100,18 +106,18 @@ namespace MusicOrganizer
         // j'ai adapté l'exemple pour utiliser une arborescence de fichiers/dossiers.
         void SetIsChecked(bool? value, bool updateChildren, bool updateParent)
         {
-            if (value == _isChecked) return;
+            if (value == isChecked) return;
 
-            _isChecked = value;
+            isChecked = value;
 
-            if (updateChildren && _isChecked.HasValue)
+            if (updateChildren && isChecked.HasValue)
             {
                 foreach (FolderItem child in this.childFolderItem)
                 {
 
                     if (child != null)
                     {
-                        child.SetIsChecked(_isChecked, true, false);
+                        child.SetIsChecked(isChecked, true, false);
                     }
                 }
             }
@@ -164,19 +170,20 @@ namespace MusicOrganizer
             {
                 foreach (FolderItem subItem in observableCollection)
                 {
-                    if (subItem == null || subItem._path.Equals(dummy._path)) continue;
+                    // si le Dummy est encore présent, on l'ignore
+                    if (subItem == null || subItem.path.Equals(dummy.path)) continue;
 
                     // on ajoute les fichiers racines cochés
-                    if (!subItem._isFolder && subItem._isChecked.HasValue && subItem._isChecked.Value == true)
+                    if (!subItem.isFolder && subItem.isChecked.HasValue && subItem.isChecked.Value == true)
                     {
-                        selectedItem.Add(subItem._path);
+                        selectedItem.Add(subItem.path);
                     }
 
                     // si c'est un dossier qui est coché, on l'ajoute en totalité
-                    if (subItem._isFolder && subItem._isChecked.HasValue && subItem._isChecked.Value == true)
+                    if (subItem.isFolder && subItem.isChecked.HasValue && subItem.isChecked.Value == true)
                     {
 
-                        foreach (string fileName in SafeWalk.EnumerateFiles(subItem._path, "*.*", SearchOption.AllDirectories).Where(FilesWithWantedExtensionPredicate).ToList())
+                        foreach (string fileName in SafeWalk.EnumerateFiles(subItem.path, "*.*", SearchOption.AllDirectories).Where(FilesWithWantedExtensionPredicate).ToList())
                         {
                             selectedItem.Add(fileName);
                         }
@@ -187,12 +194,5 @@ namespace MusicOrganizer
             }
             return selectedItem;
         }
-
-
-        public bool IsFolder
-        {
-            get { return _isFolder; }
-        }
-
     }
 }

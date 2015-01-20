@@ -104,7 +104,7 @@ namespace MusicOrganizer
         {
             Dictionary<string, string> dicFileToProcess = CreateDictFromTags();
 
-            // cette fois-ci on connaît la fin de l'opération. Elle est terminé que le nombre d'élément traité est égal au nombre d'élément total dans le dictionnaire
+            // cette fois-ci, on connaît la fin de l'opération. Elle est terminée quand le nombre d'éléments traités est égal au nombre d'éléments totaux dans le dictionnaire
             this.IsProgressIndeterminate = false;
             this.worker.ReportProgress(0);
 
